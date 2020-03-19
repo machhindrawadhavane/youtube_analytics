@@ -14,7 +14,7 @@ require "db_config.php";
 $conn = new Database(DB_SERVER, DB_USER, DB_PASS, DB_DATABASE);
 $link = $conn->connect();
 
-$REDIRECT_URI = 'http://localhost/YoutubeDataAPI/youtube.php';
+$REDIRECT_URI = 'http://localhost/youtube_analytics/youtube.php';
 $KEY_LOCATION = __DIR__ . '/client_secret.json';
 $TOKEN_FILE   = "token.txt";
 $SCOPES  = array("https://www.googleapis.com/auth/youtube.force-ssl", "https://www.googleapis.com/auth/youtubepartner-channel-audit", "https://www.googleapis.com/auth/youtube", "https://www.googleapis.com/auth/youtube.readonly", "https://www.googleapis.com/auth/yt-analytics.readonly", "https://www.googleapis.com/auth/yt-analytics-monetary.readonly","https://www.googleapis.com/auth/youtubepartner");
