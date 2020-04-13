@@ -13,8 +13,8 @@ if (!file_exists(__DIR__ . '/vendor/autoload.php')) {
 require_once __DIR__ . '/vendor/autoload.php';
 
 $client = new Google_Client();
-$client->setApplicationName('DataImport');
-$scope = array("https://www.googleapis.com/auth/youtube.force-ssl", "https://www.googleapis.com/auth/youtubepartner-channel-audit", "https://www.googleapis.com/auth/youtube", "https://www.googleapis.com/auth/youtube.readonly", "https://www.googleapis.com/auth/yt-analytics.readonly", "https://www.googleapis.com/auth/yt-analytics-monetary.readonly","https://www.googleapis.com/auth/youtubepartner");
+$client->setApplicationName('youtubedataapi');
+$scope = array("https://www.googleapis.com/auth/youtube", "https://www.googleapis.com/auth/youtube.readonly", "https://www.googleapis.com/auth/yt-analytics.readonly", "https://www.googleapis.com/auth/yt-analytics-monetary.readonly","https://www.googleapis.com/auth/youtubepartner");
 $client->setScopes($scope);
 
 // TODO: For this request to work, you must replace
@@ -24,7 +24,7 @@ $client->setScopes($scope);
 
 $client->setAuthConfig('client_secret.json');
 $client->setAccessType('offline');
-$client->setRedirectUri("http://localhost/YoutubeDataAPI/youtube_analytics.php");
+$client->setRedirectUri("http://localhost/youtube_analytics/youtube_analytics.php");
 $client->setApprovalPrompt('force');
 // Request authorization from the user.
 $authUrl = $client->createAuthUrl();
@@ -61,7 +61,7 @@ if($client->getAccessToken()) {
               'filters' =>$video_id,
           ];
           $response = $service->reports->query($queryParams);
-          $analytics_data = json_decode(json_encode($response), true);
+         $analytics_data = json_decode(json_encode($response), true);
          $coulumnHeaderCounts = isset($analytics_data['columnHeaders']) ? count($analytics_data['columnHeaders']) : 0;
          $x = 0;
          $queryValues = '`channelId`,`v_id`';
