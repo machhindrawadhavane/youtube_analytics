@@ -12,12 +12,12 @@ require "db_config.php";
 $conn = new Database(DB_SERVER, DB_USER, DB_PASS, DB_DATABASE);
 $link = $conn->connect();
 
-$REDIRECT_URI = 'https://localhost/youtube_analytics/youtube.php';
+$REDIRECT_URI = 'http://localhost/youtube_analytics/youtube.php';
 $KEY_LOCATION = __DIR__ . '/client_secret.json';
 $TOKEN_FILE   = "token.txt";
 $SCOPES  = array("https://www.googleapis.com/auth/youtube.force-ssl", "https://www.googleapis.com/auth/youtubepartner-channel-audit", "https://www.googleapis.com/auth/youtube", "https://www.googleapis.com/auth/youtube.readonly", "https://www.googleapis.com/auth/yt-analytics.readonly", "https://www.googleapis.com/auth/yt-analytics-monetary.readonly","https://www.googleapis.com/auth/youtubepartner");
 $client = new Google_Client();
-$client->setApplicationName("DataImport");
+$client->setApplicationName("YoutubeDataAPI");
 $client->setAuthConfig($KEY_LOCATION);
 // Incremental authorization
 $client->setIncludeGrantedScopes(true);
@@ -45,7 +45,6 @@ if(isset($_GET['code']) && !empty($_GET['code'])) {
     }
 }
 
-
 if (!isset($_SESSION['accessToken'])) {
     $token = @file_get_contents($TOKEN_FILE);
     if ($token == null) {
@@ -60,6 +59,9 @@ if (!isset($_SESSION['accessToken'])) {
 }
 
 $client->setAccessToken($_SESSION['accessToken']);
+
+
+
 
 /* Refresh token when expired */
 if ($client->isAccessTokenExpired()) {
@@ -108,6 +110,7 @@ if($client->getAccessToken()) {
 					
             $response = $service->reports->query($queryParams);
             $analytics_data = json_decode(json_encode($response), true);
+			//print_r($analytics_data);die;
             insertUpdateDayWiseYoutubeAnalyticsData($videoData,$analytics_data);
           }
 
@@ -224,7 +227,7 @@ function insertUpdateYearlyWiseYoutubeAnalyticsData($videoData=array(),$analytic
 function getVideoListingArr(){
   global $link;
   $my_videos = array();
-  $video_listing_query = "select * from video_data where id > 400"; 
+  $video_listing_query = 'select * from video_data where channel_name = "Newj" and id > 13'; 
   $result = mysqli_query($link, $video_listing_query);
   while($row = mysqli_fetch_assoc($result)){
       $my_videos[] = $row;
