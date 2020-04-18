@@ -6,15 +6,13 @@ if (!file_exists(__DIR__ . '/vendor/autoload.php')) {
 require_once __DIR__ . '/vendor/autoload.php';
 session_start();
 ini_set('max_execution_time',0);
-//unset($_SESSION['accessToken']);
-//print_r($_SESSION);die;
 date_default_timezone_set('Asia/Calcutta');
 require "database_connection.php";
 require "db_config.php";
 $conn = new Database(DB_SERVER, DB_USER, DB_PASS, DB_DATABASE);
 $link = $conn->connect();
 
-$REDIRECT_URI = 'http://localhost/youtube_analytics/youtube.php';
+$REDIRECT_URI = 'https://localhost/youtube_analytics/youtube.php';
 $KEY_LOCATION = __DIR__ . '/client_secret.json';
 $TOKEN_FILE   = "token.txt";
 $SCOPES  = array("https://www.googleapis.com/auth/youtube.force-ssl", "https://www.googleapis.com/auth/youtubepartner-channel-audit", "https://www.googleapis.com/auth/youtube", "https://www.googleapis.com/auth/youtube.readonly", "https://www.googleapis.com/auth/yt-analytics.readonly", "https://www.googleapis.com/auth/yt-analytics-monetary.readonly","https://www.googleapis.com/auth/youtubepartner");
@@ -29,7 +27,7 @@ $client->setRedirectUri($REDIRECT_URI);
 $client->setScopes($SCOPES);
 
 $isMonthWiseDataFlag = false;
-$isDayWiseDataFlag = false;
+$isDayWiseDataFlag = true;
 $isYearlyWiseDataFlag = false;
 
 if(isset($_GET['code']) && !empty($_GET['code'])) {
@@ -76,7 +74,6 @@ if ($client->isAccessTokenExpired()) {
 if($client->getAccessToken()) {
       $service = new Google_Service_YouTubeAnalytics($client);
       $youtube_videos_id_listing = getVideoListingArr();
-      //print_r($youtube_videos_id_listing);die;
       $recordCounter=0;
       foreach($youtube_videos_id_listing as $videoData) {
           /*$video_id = 'video==BdZOQsErPdM';*/
@@ -108,6 +105,7 @@ if($client->getAccessToken()) {
                         'sort' => 'day',
                         'startDate' => "2018-11-01"
                     ];
+					
             $response = $service->reports->query($queryParams);
             $analytics_data = json_decode(json_encode($response), true);
             insertUpdateDayWiseYoutubeAnalyticsData($videoData,$analytics_data);
