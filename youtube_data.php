@@ -11,7 +11,7 @@ if (mysqli_connect_errno()) {
 function youtubeVideosMetaDataAPIListing(){
 	global $conn;
 	$API_Url = 'https://www.googleapis.com/youtube/v3/';
-	$API_Key = 'AIzaSyDQkWigM9bDK3ZlNvLljoPormq-Dpjy8AQ';
+	$API_Key = 'AIzaSyDdY6B3NdgPmG8_e1QtOvoKC3fpz8vfP54';
 	$ChannelId = 'UCvTAAa8-yBQEVgLLCKYbAiQ';//Newj
 	$channelName = "Newj";
 	$query = "select * from youtube_statuses ";
@@ -30,7 +30,6 @@ function youtubeVideosMetaDataAPIListing(){
 		foreach($jsonDetails['items'] as $video){
 		  $my_videos[] = array('v_id'=>$video['snippet']['resourceId']['videoId'],'v_name'=>$video['snippet']['title'],'channelId'=>$video['snippet']['channelId'],'channel_name'=>$channelName,'publishedAt'=>$video['snippet']['publishedAt']);
 		}
-
 		while (isset($jsonDetails['nextPageToken'])) {
 		  $next_page_URL = $channel_URL.'&pageToken='.$jsonDetails['nextPageToken'];
 		  $jsonDetails = json_decode(file_get_contents($next_page_URL),true);
@@ -49,7 +48,7 @@ if(count($my_videos) > 0){
 		$result = mysqli_query($conn, $query);
 		if(!mysqli_num_rows($result) > 0){
 			$sql = "INSERT INTO video_data (v_id, v_name, channelId,channel_name,publishedAt) VALUES ('".$videoData['v_id']."','".trim($videoData['v_name'])."','".$videoData['channelId']."','".$videoData['channel_name']."','".$videoData['publishedAt']."') ";
-			echo $videoData['v_id'].'--'.$videoData['channel_name'].',';
+			echo $videoData['v_id'].'--'.$videoData['channel_name'].'\n';
 			$conn->query($sql);
 		}
 	}

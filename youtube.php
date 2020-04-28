@@ -75,7 +75,7 @@ $client->setAccessToken($_SESSION['accessToken']);
 if ($client->isAccessTokenExpired()) {
     // the new access token comes with a refresh token as well
     $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
-    file_put_contents($TOKEN_FILE, json_encode($client->getAccessToken()));
+    file_put_contents($TOKEN_FILE,json_encode($client->getAccessToken()));
 }
 
 
@@ -91,13 +91,13 @@ if($client->getAccessToken()) {
           echo $recordCounter.")".$videoData['v_id']."\n";
           if($isMonthWiseDataFlag == true){
               $queryParams = [
-                        'endDate' => "2020-03-01",
+                        'endDate' => "2020-04-01",
                         'ids' =>$channel_id,
                         'metrics' => 'views,comments,likes,dislikes,shares,estimatedMinutesWatched,averageViewDuration,averageViewPercentage',
                         'filters' =>$video_id,
                         'dimensions' =>'month',
                         'sort' => 'month',
-                        'startDate' => "2018-11-01"
+                        'startDate' => "2020-03-01"
                     ];
             $response = $service->reports->query($queryParams);
             $analytics_data = json_decode(json_encode($response), true);
@@ -108,13 +108,13 @@ if($client->getAccessToken()) {
 			$sqlStatuses = "UPDATE youtube_statuses SET day_v_id = '".$videoData['v_id']."' WHERE channel_id = '".$videoData['channelId']."' ";
 			$link->query($sqlStatuses);
               $queryParams = [
-                        'endDate' => "2020-03-01",
+                        'endDate' => "2020-04-20",
                         'ids' =>$channel_id,
                         'metrics' => 'views,comments,likes,dislikes,shares,estimatedMinutesWatched,averageViewDuration,averageViewPercentage',
                         'filters' =>$video_id,
                         'dimensions' =>'day',
                         'sort' => 'day',
-                        'startDate' => "2018-11-01"
+                        'startDate' => "2019-01-01"
                     ];
 					
             $response = $service->reports->query($queryParams);
@@ -233,7 +233,7 @@ function insertUpdateYearlyWiseYoutubeAnalyticsData($videoData=array(),$analytic
 function getVideoListingArr(){
   global $link;
   $my_videos = array();
-  $video_listing_query = 'select * from video_data where channelId = "UCroXYbhU8G2436kTb_wYnGQ" and  id > 924 '; 
+  $video_listing_query = 'select * from video_data where channelId = "UCsxUfRSw0AOnnghHpuN8dvA" and  id > 1277 '; 
   $result = mysqli_query($link, $video_listing_query);
   while($row = mysqli_fetch_assoc($result)){
       $my_videos[] = $row;
