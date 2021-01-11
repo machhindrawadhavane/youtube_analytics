@@ -30,7 +30,11 @@ function youtubeVideosMetaDataAPIListing(){
 		foreach($jsonDetails['items'] as $video){
 		  $my_videos[] = array('v_id'=>$video['snippet']['resourceId']['videoId'],'v_name'=>$video['snippet']['title'],'channelId'=>$video['snippet']['channelId'],'channel_name'=>$channelName,'publishedAt'=>$video['snippet']['publishedAt']);
 		}
+<<<<<<< HEAD
 		/*while(isset($jsonDetails['nextPageToken'])) {
+=======
+		while (isset($jsonDetails['nextPageToken'])) {
+>>>>>>> 8a16d51ae4d735f6aec68726163f07ea11cd4111
 		  $next_page_URL = $channel_URL.'&pageToken='.$jsonDetails['nextPageToken'];
 		  $jsonDetails = cUrlCall($next_page_URL);
 		  foreach($jsonDetails['items'] as $video){
@@ -65,7 +69,7 @@ if(count($my_videos) > 0){
 		$result = mysqli_query($conn, $query);
 		if(!mysqli_num_rows($result) > 0){
 			$sql = "INSERT INTO video_data (v_id, v_name, channelId,channel_name,publishedAt) VALUES ('".$videoData['v_id']."','".trim($videoData['v_name'])."','".$videoData['channelId']."','".$videoData['channel_name']."','".$videoData['publishedAt']."') ";
-			echo $videoData['v_id'].'--'.$videoData['channel_name'].',';
+			echo $videoData['v_id'].'--'.$videoData['channel_name'].'\n';
 			$conn->query($sql);
 		}
 	}

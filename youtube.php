@@ -74,7 +74,7 @@ $client->setAccessToken($_SESSION['accessToken']);
 if ($client->isAccessTokenExpired()) {
     // the new access token comes with a refresh token as well
     $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
-    file_put_contents($TOKEN_FILE, json_encode($client->getAccessToken()));
+    file_put_contents($TOKEN_FILE,json_encode($client->getAccessToken()));
 }
 
 if($client->getAccessToken()) {
@@ -101,6 +101,25 @@ if($client->getAccessToken()) {
             insertUpdateMonthlyYoutubeAnalyticsData($videoData,$analytics_data);
           }
 
+<<<<<<< HEAD
+=======
+          if($isDayWiseDataFlag == true){
+			$sqlStatuses = "UPDATE youtube_statuses SET day_v_id = '".$videoData['v_id']."' WHERE channel_id = '".$videoData['channelId']."' ";
+			$link->query($sqlStatuses);
+              $queryParams = [
+                        'endDate' => "2020-04-20",
+                        'ids' =>$channel_id,
+                        'metrics' => 'views,comments,likes,dislikes,shares,estimatedMinutesWatched,averageViewDuration,averageViewPercentage',
+                        'filters' =>$video_id,
+                        'dimensions' =>'day',
+                        'sort' => 'day',
+                        'startDate' => "2019-01-01"
+                    ];
+					
+            $response = $service->reports->query($queryParams);
+            $analytics_data = json_decode(json_encode($response), true);
+            insertUpdateDayWiseYoutubeAnalyticsData($videoData,$analytics_data);
+          }
           if($isYearlyWiseDataFlag == true){
             $queryParams = [
                 'endDate' => date("Y-m-d"),
