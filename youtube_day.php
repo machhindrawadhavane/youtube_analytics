@@ -157,7 +157,7 @@ function insertUpdateDayWiseYoutubeAnalyticsData($videoData=array(),$analytics_d
 function getVideoListingArr(){
   global $link;
   $my_videos = array();
-  $video_listing_query = 'select * from video_data where channelId = "UCsxUfRSw0AOnnghHpuN8dvA" order by publishedAt asc'; 
+  $video_listing_query = 'select * from video_data where channelId = "UCvTAAa8-yBQEVgLLCKYbAiQ" order by publishedAt asc'; 
   $result = mysqli_query($link, $video_listing_query);
   while($row = mysqli_fetch_assoc($result)){
       $my_videos[] = $row;
